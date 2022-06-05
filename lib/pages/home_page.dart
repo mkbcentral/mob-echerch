@@ -1,4 +1,7 @@
-import 'package:echurch/controller/user_controller.dart';
+import 'package:echurch/pages/church/church_page.dart';
+import 'package:echurch/pages/events/event_page.dart';
+import 'package:echurch/pages/music/music_page.dart';
+import 'package:echurch/pages/profile/profile_page.dart';
 import 'package:echurch/pages/ui/basics/notification_service.dart';
 import 'package:echurch/pages/ui/themes/theme_service.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +17,14 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   // ignore: prefer_typing_uninitialized_variables
   var notifyHelper;
+  int index = 0;
+
+  final scrrens = [
+    const ChurchPage(),
+    const EventPage(),
+    const MusicPage(),
+    const ProfilePage()
+  ];
   @override
   void initState() {
     notifyHelper = NotifyHelper();
@@ -25,38 +36,41 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: _appBar(),
-      body: Center(
-        child: Column(
-          children: [
-            TextButton(
-                onPressed: () {
-                  deleteShowHomePref();
-                  logout();
-                },
-                child: const Text("Logout")),
-            const Text(
-              "Home page",
-              style: TextStyle(fontSize: 25),
-            ),
-          ],
-        ),
+      body: scrrens[index],
+      bottomNavigationBar: NavigationBarTheme(
+        data: NavigationBarThemeData(
+            labelTextStyle: MaterialStateProperty.all(
+                const TextStyle(fontSize: 14, fontWeight: FontWeight.bold))),
+        child: NavigationBar(
+            height: 60,
+            selectedIndex: index,
+            labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
+            animationDuration: const Duration(seconds: 3),
+            onDestinationSelected: (index) =>
+                setState(() => this.index = index),
+            destinations: const [
+              NavigationDestination(
+                icon: Icon(Icons.church_outlined),
+                label: "Eglises",
+                selectedIcon: Icon(Icons.church),
+              ),
+              NavigationDestination(
+                icon: Icon(Icons.event),
+                label: "Evenements",
+                selectedIcon: Icon(Icons.event_note_rounded),
+              ),
+              NavigationDestination(
+                icon: Icon(Icons.music_note_outlined),
+                label: "Musics",
+                selectedIcon: Icon(Icons.music_note),
+              ),
+              NavigationDestination(
+                icon: Icon(Icons.person_outline),
+                label: "Profile",
+                selectedIcon: Icon(Icons.person),
+              )
+            ]),
       ),
-    );
-  }
-
-  _appBar() {
-    return AppBar(
-      leading: GestureDetector(
-        onTap: () {
-          setState(() {
-            ThemeService().swichMode();
-            print(Get.isDarkMode);
-          });
-        },
-        child: Icon(Get.isDarkMode ? Icons.light_mode : Icons.nightlight_round),
-      ),
-      actions: [],
     );
   }
 }
