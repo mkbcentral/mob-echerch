@@ -41,6 +41,12 @@ dependencies:
   get_storage: ^2.0.3
   flutter_local_notifications: ^9.6.0
   flutter_native_timezone: ^2.0.0
+  cached_network_image: ^3.2.1
+  audioplayers: ^0.20.1
+  mini_music_visualizer: ^1.0.2
+  flutter_visualizers: ^0.0.1
+  shimmer: ^2.0.0
+  fade_shimmer: ^2.0.1
 
 
 dev_dependencies:

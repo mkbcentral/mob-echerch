@@ -1,6 +1,3 @@
-import 'package:echurch/controller/user_controller.dart';
-import 'package:echurch/pages/auth/login_page.dart';
-import 'package:echurch/pages/home_page.dart';
 import 'package:echurch/pages/loading_page.dart';
 import 'package:echurch/pages/ui/componets/buil_onboarding_view_page.dart';
 import 'package:flutter/material.dart';
