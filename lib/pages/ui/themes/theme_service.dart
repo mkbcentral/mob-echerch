@@ -6,7 +6,7 @@ class ThemeService {
   final _box = GetStorage();
   final _key = "IsDarkMode";
   _saveThemeToKey(bool isDarkMode) => _box.write(_key, isDarkMode);
-  bool _loadThemeForBox() => _box.read(_key) ?? false;
+  bool _loadThemeForBox() => _box.read(_key) ?? true;
   ThemeMode get theme => _loadThemeForBox() ? ThemeMode.dark : ThemeMode.light;
 
   void swichMode() {

@@ -44,9 +44,11 @@ dependencies:
   cached_network_image: ^3.2.1
   audioplayers: ^0.20.1
   mini_music_visualizer: ^1.0.2
-  flutter_visualizers: ^0.0.1
   shimmer: ^2.0.0
   fade_shimmer: ^2.0.1
+  dio: ^4.0.6
+  path_provider: ^2.0.11
+  progress_dialog_null_safe: ^1.0.7
 
 
 dev_dependencies:

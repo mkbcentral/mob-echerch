@@ -16,21 +16,15 @@ Widget musicListCustom({
       padding: const EdgeInsets.all(8.0),
       child: Row(
         children: [
-          isPlayed
-              ? const MiniMusicVisualizer(
-                  color: Colors.red,
-                  width: 7,
-                  height: 15,
-                )
-              : Container(
-                  width: 70,
-                  height: 70,
-                  decoration: BoxDecoration(
-                      color: const Color.fromARGB(255, 145, 247, 247),
-                      borderRadius: BorderRadius.circular(10),
-                      image: const DecorationImage(
-                          image: AssetImage("assets/images/earphone.jpg"))),
-                ),
+          Container(
+            width: 70,
+            height: 70,
+            decoration: BoxDecoration(
+                color: const Color.fromARGB(255, 145, 247, 247),
+                borderRadius: BorderRadius.circular(10),
+                image: const DecorationImage(
+                    image: AssetImage("assets/images/earphone.jpg"))),
+          ),
           const SizedBox(
             width: 10,
           ),
@@ -42,9 +36,6 @@ Widget musicListCustom({
                   title,
                   style: const TextStyle(
                       fontSize: 20, fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(
-                  height: 2,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,

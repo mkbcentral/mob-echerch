@@ -1,4 +1,5 @@
 import 'package:echurch/controller/chiurch_controller.dart';
+import 'package:echurch/controller/user_controller.dart';
 import 'package:echurch/models/Church.dart';
 import 'package:echurch/pages/church/preachin_page.dart';
 import 'package:echurch/pages/ui/basics/basic_ui.dart';
@@ -8,6 +9,7 @@ import 'package:echurch/services/api_response.dart';
 import 'package:flutter/material.dart';
 // ignore: depend_on_referenced_packages
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ChurchPage extends StatefulWidget {
   const ChurchPage({Key? key}) : super(key: key);
@@ -71,6 +73,17 @@ class _ChurchPageState extends State<ChurchPage> {
     return AppBar(
       title: const Text("EGLISES"),
       centerTitle: true,
+      flexibleSpace: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: <Color>[
+                Colors.black,
+                Get.isDarkMode ? Colors.black38 : Colors.blue
+              ]),
+        ),
+      ),
       leading: GestureDetector(
         onTap: () {
           setState(() {
@@ -79,7 +92,16 @@ class _ChurchPageState extends State<ChurchPage> {
         },
         child: Icon(Get.isDarkMode ? Icons.light_mode : Icons.nightlight_round),
       ),
-      actions: [IconButton(onPressed: () {}, icon: const Icon(Icons.search))],
+      actions: [
+        IconButton(
+            onPressed: () async {
+              await logout();
+              SharedPreferences preferences =
+                  await SharedPreferences.getInstance();
+              preferences.setBool('showHome', false);
+            },
+            icon: const Icon(Icons.search))
+      ],
     );
   }
 }

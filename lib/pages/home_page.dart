@@ -37,40 +37,34 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: scrrens[index],
-      bottomNavigationBar: NavigationBarTheme(
-        data: NavigationBarThemeData(
-            labelTextStyle: MaterialStateProperty.all(
-                const TextStyle(fontSize: 14, fontWeight: FontWeight.bold))),
-        child: NavigationBar(
-            height: 60,
-            selectedIndex: index,
-            labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
-            animationDuration: const Duration(seconds: 3),
-            onDestinationSelected: (index) =>
-                setState(() => this.index = index),
-            destinations: const [
-              NavigationDestination(
-                icon: Icon(Icons.church_outlined),
-                label: "Eglises",
-                selectedIcon: Icon(Icons.church),
-              ),
-              NavigationDestination(
-                icon: Icon(Icons.event),
-                label: "Evenements",
-                selectedIcon: Icon(Icons.event_note_rounded),
-              ),
-              NavigationDestination(
-                icon: Icon(Icons.music_note_outlined),
-                label: "Musics",
-                selectedIcon: Icon(Icons.music_note),
-              ),
-              NavigationDestination(
-                icon: Icon(Icons.person_outline),
-                label: "Profile",
-                selectedIcon: Icon(Icons.person),
-              )
-            ]),
-      ),
+      bottomNavigationBar: NavigationBar(
+          height: 60,
+          selectedIndex: index,
+          labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
+          animationDuration: const Duration(seconds: 3),
+          onDestinationSelected: (index) => setState(() => this.index = index),
+          destinations: const [
+            NavigationDestination(
+              icon: Icon(Icons.church_outlined),
+              label: "Eglises",
+              selectedIcon: Icon(Icons.church),
+            ),
+            NavigationDestination(
+              icon: Icon(Icons.event),
+              label: "Evenements",
+              selectedIcon: Icon(Icons.event_note_rounded),
+            ),
+            NavigationDestination(
+              icon: Icon(Icons.music_note_outlined),
+              label: "Musics",
+              selectedIcon: Icon(Icons.music_note),
+            ),
+            NavigationDestination(
+              icon: Icon(Icons.person_outline),
+              label: "Profile",
+              selectedIcon: Icon(Icons.person),
+            )
+          ]),
     );
   }
 }

@@ -1,4 +1,9 @@
+import 'dart:io';
+
+import 'package:echurch/pages/home_page.dart';
+import 'package:path_provider/path_provider.dart' as path;
 import 'package:audioplayers/audioplayers.dart';
+import 'package:dio/dio.dart';
 import 'package:echurch/controller/chiurch_controller.dart';
 import 'package:echurch/models/Church.dart';
 import 'package:echurch/models/Preaching.dart';
@@ -7,6 +12,8 @@ import 'package:echurch/pages/ui/basics/basic_ui.dart';
 import 'package:echurch/pages/ui/componets/custom_music_list.dart';
 import 'package:echurch/services/api_response.dart';
 import 'package:flutter/material.dart';
+import 'package:mini_music_visualizer/mini_music_visualizer.dart';
+import 'package:progress_dialog_null_safe/progress_dialog_null_safe.dart';
 
 class PreachingPage extends StatefulWidget {
   final Church? church;
@@ -19,9 +26,12 @@ class PreachingPage extends StatefulWidget {
 class _PreachingPageState extends State<PreachingPage> {
   List<dynamic> preachingList = [];
   bool isLoading = true;
-  String currentSinger = "";
+  String currentPredicator = "";
   String currentTitle = "";
   String currentAudioUrl = "";
+  String _progress = "";
+  String fakeUrl =
+      "https://www.republikville.com/_media/_chanson/_musiques/P%20Son%20Sabu_1mglumet.mp3";
 
   Duration duration = Duration.zero;
   Duration position = Duration.zero;
@@ -31,7 +41,10 @@ class _PreachingPageState extends State<PreachingPage> {
   AudioPlayer audioPlayer = AudioPlayer(mode: PlayerMode.MEDIA_PLAYER);
   bool isPlaying = false;
   bool isSelected = false;
+  bool isDownloading = false;
+  String fileFullPath = "";
   String currentSong = "";
+  late Dio dio;
   void playMusic(String url) async {
     if (isPlaying && currentSong != url) {
       audioPlayer.pause();
@@ -65,8 +78,45 @@ class _PreachingPageState extends State<PreachingPage> {
     }
   }
 
+  Future<List<Directory>?> _getExternalStoragePath() {
+    return path.getExternalStorageDirectories(
+        type: path.StorageDirectory.downloads);
+  }
+
+  Future _dowloadPreaching(String urlPath, String fileName) async {
+    ProgressDialog pr;
+    pr = ProgressDialog(context, type: ProgressDialogType.normal);
+    pr.style(message: "Telechargement ecn cours...");
+    try {
+      await pr.show();
+      final _dirList = await _getExternalStoragePath();
+      final p = _dirList![0].path;
+      final file = File('$p/$fileName');
+      await dio.download(urlPath, file.path, onReceiveProgress: (rec, total) {
+        setState(() {
+          isDownloading = true;
+          _progress = "${((rec / total) * 100).toStringAsFixed(0)}%";
+          print('$_progress');
+          pr.update(message: "Veuillez patienter:$_progress");
+        });
+      });
+      pr.hide();
+
+      fileFullPath = file.path;
+      // ignore: use_build_context_synchronously
+      showSnackBar(context, fileFullPath);
+    } catch (e) {
+      print(e);
+      pr.hide();
+    }
+    setState(() {
+      isDownloading = false;
+    });
+  }
+
   @override
   void initState() {
+    dio = Dio();
     retreavePreachings();
 
     audioPlayer.onPlayerStateChanged.listen((event) {
@@ -107,7 +157,7 @@ class _PreachingPageState extends State<PreachingPage> {
             audioPlayer.dispose();
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => const ChurchPage()),
+              MaterialPageRoute(builder: (context) => const HomePage()),
             );
           },
         ),
@@ -126,13 +176,13 @@ class _PreachingPageState extends State<PreachingPage> {
                       Preaching preaching = preachingList[index];
 
                       if (index == 0) {
-                        currentSinger = preaching.predicator_name!;
+                        currentPredicator = preaching.predicator_name!;
                         currentTitle = preaching.title!;
                       }
                       return musicListCustom(
                           onTap: () {
                             setState(() {
-                              currentSinger = preaching.predicator_name!;
+                              currentPredicator = preaching.predicator_name!;
                               currentTitle = preaching.title!;
                               audioPlayer.stop();
                             });
@@ -143,7 +193,10 @@ class _PreachingPageState extends State<PreachingPage> {
                           title: '${preaching.title}',
                           pastor_name: '${preaching.predicator_name}',
                           audio_url: '${preaching.audio_file_url}',
-                          isPlayed: isPlaying);
+                          isPlayed: isPlaying,
+                          onPressedDownload: () {
+                            _dowloadPreaching(fakeUrl, "predication.mp3");
+                          });
                     }),
           ),
           Card(
@@ -179,8 +232,8 @@ class _PreachingPageState extends State<PreachingPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       Container(
-                        width: 70,
-                        height: 70,
+                        width: 80,
+                        height: 80,
                         decoration: BoxDecoration(
                             color: Colors.red,
                             borderRadius: BorderRadius.circular(10),
@@ -195,34 +248,49 @@ class _PreachingPageState extends State<PreachingPage> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(currentSinger,
+                            Text(currentPredicator,
                                 style: const TextStyle(
                                     fontSize: 20, fontWeight: FontWeight.bold)),
+                            const SizedBox(
+                              width: 10,
+                            ),
                             Text(currentTitle,
                                 style: const TextStyle(fontSize: 15)),
+                            const SizedBox(
+                              height: 2,
+                            ),
+                            isPlaying
+                                ? const MiniMusicVisualizer(
+                                    color: Colors.red,
+                                    width: 4,
+                                    height: 15,
+                                  )
+                                : const Text("")
                           ],
                         ),
                       ),
-                      IconButton(
-                          onPressed: () {
-                            if (isPlaying) {
-                              audioPlayer.pause();
-                              setState(() {
-                                iconBtn = Icons.pause;
-                                isPlaying = false;
-                              });
-                            } else {
-                              audioPlayer.resume();
-                              setState(() {
-                                iconBtn = Icons.play_arrow;
-                                isPlaying = true;
-                              });
-                            }
-                          },
-                          icon: Icon(
-                            iconBtn,
-                            size: 50,
-                          ))
+                      isPlaying
+                          ? IconButton(
+                              onPressed: () {
+                                if (isPlaying) {
+                                  audioPlayer.pause();
+                                  setState(() {
+                                    iconBtn = Icons.pause;
+                                    isPlaying = false;
+                                  });
+                                } else {
+                                  audioPlayer.resume();
+                                  setState(() {
+                                    iconBtn = Icons.play_arrow;
+                                    isPlaying = true;
+                                  });
+                                }
+                              },
+                              icon: Icon(
+                                iconBtn,
+                                size: 50,
+                              ))
+                          : const Text("")
                     ],
                   ),
                 ],
