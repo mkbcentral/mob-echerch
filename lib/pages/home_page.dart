@@ -3,8 +3,8 @@ import 'package:echurch/pages/events/event_page.dart';
 import 'package:echurch/pages/music/music_page.dart';
 import 'package:echurch/pages/profile/profile_page.dart';
 import 'package:echurch/pages/ui/basics/notification_service.dart';
-import 'package:echurch/pages/ui/themes/theme_service.dart';
 import 'package:flutter/material.dart';
+// ignore: depend_on_referenced_packages
 import 'package:get/get.dart';
 
 class HomePage extends StatefulWidget {
@@ -37,34 +37,48 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: scrrens[index],
-      bottomNavigationBar: NavigationBar(
-          height: 60,
-          selectedIndex: index,
-          labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
-          animationDuration: const Duration(seconds: 3),
-          onDestinationSelected: (index) => setState(() => this.index = index),
-          destinations: const [
-            NavigationDestination(
-              icon: Icon(Icons.church_outlined),
-              label: "Eglises",
-              selectedIcon: Icon(Icons.church),
-            ),
-            NavigationDestination(
-              icon: Icon(Icons.event),
-              label: "Evenements",
-              selectedIcon: Icon(Icons.event_note_rounded),
-            ),
-            NavigationDestination(
-              icon: Icon(Icons.music_note_outlined),
-              label: "Musics",
-              selectedIcon: Icon(Icons.music_note),
-            ),
-            NavigationDestination(
-              icon: Icon(Icons.person_outline),
-              label: "Profile",
-              selectedIcon: Icon(Icons.person),
-            )
-          ]),
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: <Color>[
+                Colors.blue,
+                Get.isDarkMode
+                    ? Colors.black38
+                    : const Color.fromARGB(255, 20, 20, 20)
+              ]),
+        ),
+        child: NavigationBar(
+            height: 60,
+            selectedIndex: index,
+            labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
+            animationDuration: const Duration(seconds: 3),
+            onDestinationSelected: (index) =>
+                setState(() => this.index = index),
+            destinations: const [
+              NavigationDestination(
+                icon: Icon(Icons.church_outlined),
+                label: "Eglises",
+                selectedIcon: Icon(Icons.church),
+              ),
+              NavigationDestination(
+                icon: Icon(Icons.event),
+                label: "Evenements",
+                selectedIcon: Icon(Icons.event_note_rounded),
+              ),
+              NavigationDestination(
+                icon: Icon(Icons.music_note_outlined),
+                label: "Musics",
+                selectedIcon: Icon(Icons.music_note),
+              ),
+              NavigationDestination(
+                icon: Icon(Icons.person_outline),
+                label: "Profile",
+                selectedIcon: Icon(Icons.person),
+              )
+            ]),
+      ),
     );
   }
 }

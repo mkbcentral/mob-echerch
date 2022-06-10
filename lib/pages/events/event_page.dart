@@ -1,6 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:echurch/controller/chiurch_controller.dart';
+import 'package:echurch/controller/user_controller.dart';
 import 'package:echurch/models/ChurchEvent.dart';
+import 'package:echurch/pages/auth/login_page.dart';
 import 'package:echurch/pages/ui/basics/basic_ui.dart';
 import 'package:echurch/pages/ui/componets/buil_like_event.dart';
 import 'package:echurch/pages/ui/themes/theme_service.dart';
@@ -20,13 +22,13 @@ class EventPage extends StatefulWidget {
 
 class _EventPageState extends State<EventPage> {
   List<dynamic> eventList = [];
-  bool isLoading = true;
-  Future<void> retreaveEvents() async {
+  bool _isLoading = true;
+  Future<void> _retreaveEvents() async {
     ApiResponse response = await getEvents();
     if (response.error == null) {
       setState(() {
         eventList = response.data as List<dynamic>;
-        isLoading = isLoading ? !isLoading : isLoading;
+        _isLoading = _isLoading ? !_isLoading : _isLoading;
       });
     } else {
       // ignore: use_build_context_synchronously
@@ -34,9 +36,28 @@ class _EventPageState extends State<EventPage> {
     }
   }
 
+  Future<void> _handleLike(int eventId) async {
+    final response = await likeAndDislikeEvent(eventId);
+    if (response.error == null) {
+      _retreaveEvents();
+      // ignore: use_build_context_synchronously
+      showSnackBar(context, response.data.toString());
+    } else if (response.error == unauthorized) {
+      logout().then((value) => {
+            Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (context) => const LoginPage()),
+                (route) => false)
+          });
+    } else {
+      // ignore: use_build_context_synchronously
+      showSnackBar(context, response.error.toString());
+    }
+  }
+
   @override
   void initState() {
-    retreaveEvents();
+    _retreaveEvents();
     super.initState();
   }
 
@@ -46,7 +67,7 @@ class _EventPageState extends State<EventPage> {
         appBar: _appBar(),
         body: RefreshIndicator(
           onRefresh: () {
-            return retreaveEvents();
+            return _retreaveEvents();
           },
           child: ListView.builder(
               itemCount: eventList.length,
@@ -175,7 +196,19 @@ class _EventPageState extends State<EventPage> {
                         Row(
                           children: [
                             builLikeEventCustom(
-                                0, Icons.favorite, Colors.white, () {}),
+                                event.likes_count ?? 0,
+                                // ignore: unrelated_type_equality_checks
+                                event.isSelfLike == true
+                                    ? Icons.favorite
+                                    : Icons.favorite_border_outlined,
+                                // ignore: unrelated_type_equality_checks
+                                event.isSelfLike == true
+                                    ? Colors.red
+                                    : Get.isDarkMode
+                                        ? Colors.white
+                                        : Colors.black, () {
+                              _handleLike(event.id ?? 0);
+                            }),
                             Container(
                               height: 25,
                               width: 0.5,
@@ -184,7 +217,10 @@ class _EventPageState extends State<EventPage> {
                                   : const Color.fromARGB(96, 25, 25, 25),
                             ),
                             builLikeEventCustom(
-                                0, Icons.sms_outlined, Colors.white, () {})
+                                event.comments_count ?? 0,
+                                Icons.sms_outlined,
+                                Get.isDarkMode ? Colors.white : Colors.black,
+                                () {})
                           ],
                         )
                       ],
@@ -199,6 +235,7 @@ class _EventPageState extends State<EventPage> {
     return AppBar(
       title: const Text("EVENEMENTS"),
       centerTitle: true,
+      flexibleSpace: showGardientbg(),
       leading: GestureDetector(
         onTap: () {
           setState(() {

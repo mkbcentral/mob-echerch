@@ -1,3 +1,4 @@
+import 'package:echurch/pages/ui/basics/basic_ui.dart';
 import 'package:echurch/pages/ui/themes/theme_service.dart';
 import 'package:flutter/material.dart';
 // ignore: depend_on_referenced_packages
@@ -23,6 +24,7 @@ class _MusicPageState extends State<MusicPage> {
   _appBar() {
     return AppBar(
       title: const Text("MUSICS"),
+      flexibleSpace: showGardientbg(),
       centerTitle: true,
       leading: GestureDetector(
         onTap: () {

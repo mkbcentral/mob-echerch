@@ -25,7 +25,7 @@ Widget builTextFormFieldAuth(
           borderSide: const BorderSide(color: Colors.white),
           borderRadius: BorderRadius.circular(20.7),
         ),
-        enabledBorder: UnderlineInputBorder(
+        enabledBorder: OutlineInputBorder(
           borderSide: borderSide,
           borderRadius: BorderRadius.circular(20.7),
         ),

@@ -10,6 +10,7 @@ const defaulImageURL = baseAssetURL + 'image.jpg';
 const churchURL = baseURL + '/churches';
 const preachinghURL = baseURL + '/preachings/church/';
 const eventsURL = baseURL + '/events';
+const likeEventURL = baseURL + '/event/';
 
 const serverError = "Erreur du serveur";
 const unauthorized = "Unthorized";

@@ -81,7 +81,7 @@ class _LoginPageState extends State<LoginPage> {
                         builTextFormFieldAuth(
                           controler: txtEmail,
                           hintText: "Email",
-                          bgColor: Colors.white,
+                          bgColor: Colors.black26,
                           inputType: TextInputType.emailAddress,
                           borderSide: borderSide2,
                         ),
@@ -92,7 +92,7 @@ class _LoginPageState extends State<LoginPage> {
                           isObscureText: true,
                           controler: txtPassword,
                           hintText: "Mot de passe",
-                          bgColor: Colors.white,
+                          bgColor: Colors.black26,
                           inputType: TextInputType.visiblePassword,
                           borderSide: borderSide2,
                         ),

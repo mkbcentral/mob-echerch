@@ -9,7 +9,9 @@ class ChurchEvent {
   String? finished_at_date;
   String? started_at_time;
   String? finished_at_time;
-  String? status;
+  bool? isSelfLike;
+  int? likes_count;
+  int? comments_count;
   Church? church;
 
   ChurchEvent(
@@ -21,7 +23,9 @@ class ChurchEvent {
       this.finished_at_date,
       this.started_at_time,
       this.finished_at_time,
-      this.status,
+      this.isSelfLike,
+      this.likes_count,
+      this.comments_count,
       this.church});
 
   factory ChurchEvent.fromJson(Map<String, dynamic> json) {
@@ -34,7 +38,9 @@ class ChurchEvent {
         finished_at_date: json['finished_at_date'],
         started_at_time: json['started_at_time'],
         finished_at_time: json['finished_at_time'],
-        status: json['status'],
+        isSelfLike: json['isSelfLike'],
+        likes_count: json['likes_count'],
+        comments_count: json['comments_count'],
         church: Church(
             id: json['church']['id'],
             name: json['church']['name'],

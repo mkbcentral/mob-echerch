@@ -71,22 +71,16 @@ class _ChurchPageState extends State<ChurchPage> {
 
   _appBar() {
     return AppBar(
-      title: const Text("EGLISES"),
-      centerTitle: true,
-      flexibleSpace: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: <Color>[
-                Colors.black,
-                Get.isDarkMode ? Colors.black38 : Colors.blue
-              ]),
-        ),
+      title: const Text(
+        "EGLISES",
+        style: TextStyle(color: Colors.white),
       ),
+      centerTitle: true,
+      flexibleSpace: showGardientbg(),
       leading: GestureDetector(
         onTap: () {
           setState(() {
+            print("Ok");
             ThemeService().swichMode();
           });
         },

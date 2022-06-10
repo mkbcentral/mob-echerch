@@ -84,7 +84,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         builTextFormFieldAuth(
                           controler: txtName,
                           hintText: "Nom de l'utilisateur",
-                          bgColor: Colors.white,
+                          bgColor: Colors.black26,
                           inputType: TextInputType.name,
                           borderSide: borderSide2,
                         ),
@@ -94,7 +94,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         builTextFormFieldAuth(
                           controler: txtEmail,
                           hintText: "Email",
-                          bgColor: Colors.white,
+                          bgColor: Colors.black26,
                           inputType: TextInputType.emailAddress,
                           borderSide: borderSide2,
                         ),
@@ -105,7 +105,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           isObscureText: true,
                           controler: txtPassword,
                           hintText: "Mot de passe",
-                          bgColor: Colors.white,
+                          bgColor: Colors.black26,
                           inputType: TextInputType.visiblePassword,
                           borderSide: borderSide2,
                         ),
@@ -116,7 +116,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           isObscureText: true,
                           controler: txtPasswordConfirm,
                           hintText: "Confirmer le mot de passe",
-                          bgColor: Colors.white,
+                          bgColor: Colors.black26,
                           inputType: TextInputType.visiblePassword,
                           borderSide: borderSide2,
                         ),
@@ -147,7 +147,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           children: [
                             buildLabelTextFormAuth(
                                 text: "Avez-vous déjà un compte ?",
-                                txtColor: Colors.white,
+                                txtColor: Colors.black26,
                                 textSize: 14),
                             builTextButtonFormAuth(
                                 text: "Se connecter",
@@ -166,7 +166,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         const Center(
                             child: Text("Ou",
                                 style: TextStyle(
-                                    color: Colors.white, fontSize: 18))),
+                                    color: Colors.black26, fontSize: 18))),
                         const SizedBox(
                           height: 15,
                         ),
@@ -178,7 +178,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                 icon: const Icon(
                                   Icons.facebook,
                                   size: 45,
-                                  color: Colors.white,
+                                  color: Colors.black26,
                                 )),
                           ],
                         )

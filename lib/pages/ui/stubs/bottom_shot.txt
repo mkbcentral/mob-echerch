@@ -1,0 +1,56 @@
+ Future _showSlidingSeet() => showSlidingBottomSheet(context,
+      builder: (context) => SlidingSheetDialog(
+          snapSpec: const SnapSpec(initialSnap: 0.7, snappings: [0.4, 0.7, 1]),
+          builder: builSheet,
+          headerBuilder: buildHeader,
+          avoidStatusBar: true,
+          cornerRadius: 16));
+
+  Widget builSheet(contex, state) => Material(
+        child: ListView(
+          shrinkWrap: true,
+          primary: false,
+
+          padding: const EdgeInsets.all(16),
+          // ignore: prefer_const_literals_to_create_immutables
+          children: [
+            const Text(
+              "A widget that can be dragged and scrolled in a single gesture and snapped to a list of extents.",
+              style: TextStyle(color: Colors.white, fontSize: 45),
+            ),
+            const Text(
+              "A widget that can be dragged and scrolled in a single gesture and snapped to a list of extents.",
+              style: TextStyle(color: Colors.white, fontSize: 45),
+            ),
+            const Text(
+              "A widget that can be dragged and scrolled in a single gesture and snapped to a list of extents.",
+              style: TextStyle(color: Colors.white, fontSize: 45),
+            )
+          ],
+        ),
+      );
+
+  Widget buildHeader(BuildContext context, SheetState state) => Material(
+        child: Container(
+          color: Colors.blue.shade800,
+          width: double.infinity,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const SizedBox(
+                height: 16,
+              ),
+              Container(
+                width: 32,
+                height: 8,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(165),
+                    color: Colors.white),
+              ),
+              const SizedBox(
+                height: 16,
+              ),
+            ],
+          ),
+        ),
+      );
